@@ -52,6 +52,7 @@ class PBot {
         result = result.split(':')[1].trim();
 
         result = result.replace(/pBot/g, this.botName);
+        result = result.replace(/ρBot/g, this.botName);
 
         return result;
 
