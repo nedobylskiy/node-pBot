@@ -6,9 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lailune/node-pBot.git"
+  },
+  "author": "Andrey Nedobylsky",
+  "license": "Apache-2.0",
   "dependencies": {
     "puppeteer": "^5.2.1"
-  }
+  },
+  "keywords": [
+    "bot",
+    "russian",
+    "english",
+    "api",
+    "pbot",
+    "nlp",
+    "mockup"
+  ]
 }
