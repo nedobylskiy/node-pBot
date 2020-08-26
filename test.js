@@ -1,11 +1,11 @@
 const PBot = require('./index');
 
 (async ()=>{
-    let pBot = new PBot('Пушистик');
+    let pBot = new PBot('Mr. Potato','en');
     await pBot.init();
 
-    console.log(await pBot.say('Меня зовут Андрей'));
-    console.log(await pBot.say('Чё как дела?'));
+    console.log(await pBot.say('Hi'));
+    console.log(await pBot.say('How are you?'));
 
     await pBot.destroy();
 })();

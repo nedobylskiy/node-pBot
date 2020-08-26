@@ -9,10 +9,16 @@ const puppeteer = require('puppeteer');
  * Класс, позволяющий делать запросы в pBot и получать ответы
  */
 class PBot {
-    constructor(botName = 'pBot') {
+    /**
+     *
+     * @param botName Name for bot. Mr. Potato for ex.
+     * @param lang Bot language en, ru
+     */
+    constructor(botName = 'pBot', lang = 'en') {
         this.botName = botName;
         this.page = null;
         this.queue = [];
+        this.lang = lang
     }
 
     /**
@@ -31,8 +37,8 @@ class PBot {
 
                 let timer = setInterval(() => {
 
-                    if($('.last_answer').text() && $('.last_answer').text() !== 'NOTEXT' && $('.last_answer').text() !== 'ρBot: думаю...') {
-                        if(lastAnswer === $('.last_answer').text()){
+                    if($('.last_answer').text() && $('.last_answer').text() !== 'NOTEXT' && $('.last_answer').text() !== 'ρBot: думаю...' && $('.last_answer').text() !== 'ρBot: thinking...') {
+                        if(lastAnswer === $('.last_answer').text()) {
                             clearInterval(timer);
                             resolve($('.last_answer').text());
                         }
@@ -57,30 +63,41 @@ class PBot {
      * @returns {Promise<string>}
      * @async
      */
-    say(text){
+    say(text) {
         return new Promise((resolve => {
-            this.queue.push({text, cb: (response)=>resolve(response)});
+            this.queue.push({text, cb: (response) => resolve(response)});
         }))
     }
 
     /**
      * Инициализация
+     * @param {*} options
      * @returns {Promise<void>}
      */
-    async init() {
-        this.browser = await puppeteer.launch({headless: true});
+    async init(options = {headless: true}) {
+        this.browser = await puppeteer.launch(options);
 
         this.page = await this.browser.newPage();
         await this.page.setDefaultNavigationTimeout(0);
-        await this.page.goto('http://p-bot.ru/');
+
+        //Выбор языка
+        switch (this.lang) {
+            case "en":
+                await this.page.goto('http://p-bot.ru/en/index.html');
+                break;
+            case "ru":
+            default:
+                await this.page.goto('http://p-bot.ru/');
+        }
+
         //await page.screenshot({path: 'example.png'});
         await this.page.addScriptTag({url: 'https://code.jquery.com/jquery-3.2.1.min.js'});
 
         //Таймер очереди запросов
-        const queueProcesser = async ()=>{
+        const queueProcesser = async () => {
             let request = this.queue.shift();
 
-            if(!request){
+            if(!request) {
                 return;
             }
 
