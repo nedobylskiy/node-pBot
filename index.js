@@ -98,6 +98,7 @@ class PBot {
             let request = this.queue.shift();
 
             if(!request) {
+                this.queueTimer = setTimeout(queueProcesser, 100);
                 return;
             }
 
